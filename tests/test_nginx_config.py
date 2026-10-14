@@ -40,7 +40,7 @@ class HTTPTests(unittest.TestCase):
       with urllib.request.urlopen(base+'/mp/',timeout=1) as response:self.assertIn(b'Media Library',response.read())
       break
      except urllib.error.URLError:time.sleep(.1)
-    else:self.fail('nginx did not become ready')
+    else:self.fail('nginx did not become ready: '+(root/'error.log').read_text())
     with urllib.request.urlopen(base+'/mp/_catalog/') as response:catalog=json.load(response)
     self.assertIn('track.mp3',[row['name'] for row in catalog]);self.assertNotIn('.hidden.mp3',[row['name'] for row in catalog])
     request=urllib.request.Request(base+'/mp/track.mp3',headers={'Range':'bytes=2-5'})
