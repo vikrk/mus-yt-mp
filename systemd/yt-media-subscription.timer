@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh media subscription every six hours
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=6h
+RandomizedDelaySec=10min
+Persistent=true
+Unit=yt-media-subscription.service
+[Install]
+WantedBy=timers.target

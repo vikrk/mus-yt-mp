@@ -1,0 +1,30 @@
+    location = /mp { return 301 /mp/; }
+    location = /mp/ {
+        alias /opt/yt-media-bot/web/index.html;
+        default_type text/html;
+        add_header Cache-Control no-store always;
+        add_header X-Content-Type-Options nosniff always;
+        limit_except GET HEAD { deny all; }
+    }
+    location = /mp/_catalog/ {
+        alias /var/lib/yt-media-bot/public/;
+        index .catalog-index-disabled;
+        autoindex on;
+        autoindex_format json;
+        add_header Cache-Control no-store always;
+        add_header X-Content-Type-Options nosniff always;
+        limit_except GET HEAD { deny all; }
+    }
+    location ^~ /mp/ {
+        alias /var/lib/yt-media-bot/public/;
+        autoindex off;
+        if ($uri ~ "^/mp/\.") { return 404; }
+        if ($uri !~* "^/mp/[^/]+\.(mp3|mp4|mkv)$") { return 404; }
+        types { audio/mpeg mp3; video/mp4 mp4; video/x-matroska mkv; }
+        default_type application/octet-stream;
+        add_header Content-Disposition inline always;
+        add_header Cache-Control no-store always;
+        add_header X-Content-Type-Options nosniff always;
+        add_header Referrer-Policy no-referrer always;
+        limit_except GET HEAD { deny all; }
+    }

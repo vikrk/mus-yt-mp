@@ -1,0 +1,10 @@
+server {
+    listen 80;
+    server_name @DOMAIN@;
+    disable_symlinks on;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy no-referrer always;
+
+    include /etc/nginx/snippets/yt-media-locations.conf;
+    location / { return 404; }
+}

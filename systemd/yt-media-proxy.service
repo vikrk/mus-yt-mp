@@ -1,0 +1,38 @@
+[Unit]
+Description=Private Xray client for media bot
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/etc/yt-media-bot/proxy-config.json
+
+[Service]
+Type=simple
+User=yt-media-proxy
+Group=yt-media-proxy
+ExecStart=/opt/yt-media-bot/xray run -format json -config ${CREDENTIALS_DIRECTORY}/xray_config
+LoadCredential=xray_config:/etc/yt-media-bot/proxy-config.json
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallFilter=@system-service
+UMask=0077
+Environment=GOMAXPROCS=2
+CPUQuota=50%
+MemoryMax=256M
+TasksMax=48
+LimitCORE=0
+
+[Install]
+WantedBy=multi-user.target

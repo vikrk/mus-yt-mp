@@ -1,0 +1,17 @@
+[Unit]
+Description=Refresh media bot VLESS subscription
+After=network-online.target
+ConditionPathExists=/etc/yt-media-bot/subscription-url
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/yt-media-vpn-setup --refresh
+TimeoutStartSec=240
+UMask=0077
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ReadWritePaths=/etc/yt-media-bot
+LimitCORE=0

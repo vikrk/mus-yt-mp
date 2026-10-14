@@ -1,0 +1,7 @@
+{
+  "owner_id": null,
+  "proxy_enabled": true,
+  "proxy_scope": "telegram",
+  "public_base_url": "https://media.example.com/mp/",
+  "storage_limit_bytes": 21474836480
+}
