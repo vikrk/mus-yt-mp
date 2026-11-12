@@ -340,7 +340,9 @@ class Bot(AdminTools,YandexTools):
         if used+size>MAX_ARCHIVE:raise UserError('Хранилище достигло лимита настроенного объёма. Владелец должен очистить старые файлы; автоматически они не удаляются.')
         if shutil.disk_usage(self.public).free<size+2*1024**3:raise UserError('Недостаточно места для безопасного сохранения результата.')
         if job['format'] not in ('mp3','mp4','mkv'):raise UserError('Недопустимый формат публикации.')
-        slug=re.sub(r'[^A-Za-z0-9_-]+','-',str(title)).strip('-')[:55] or 'YouTube'
+        # Keep non-Latin letters (for example Cyrillic) so a valid title does
+        # not collapse to the unhelpful fallback name "YouTube".
+        slug=re.sub(r'[^\w-]+','-',str(title),flags=re.UNICODE).strip('-')[:55] or 'YouTube'
         name=slug+'_'+time.strftime('%Y%m%dT%H%M%SZ',time.gmtime())+'_'+secrets.token_hex(16)+'.'+job['format']
         target=self.public/name;tmp=self.public/('.pending-'+name)
         try:
